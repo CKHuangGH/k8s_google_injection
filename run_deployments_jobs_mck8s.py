@@ -66,7 +66,7 @@ spec:
 EOF'''
 
 task_events_csv_colnames = ['iat','duration','cpu','memory', 'location']         
-task_events_df = pd.read_csv(os.path.join('/home/mulugeta/Documents/PhD/Experiments/google_cluster_traces/synthetic_traces', 'synthetic_trace_10000_with_locations.csv'), sep=',', header=None, index_col=False, 
+task_events_df = pd.read_csv(os.path.join('/root/k8s_google_injection', 'synthetic_trace_10000_with_locations.csv'), sep=',', header=None, index_col=False, 
                          names=task_events_csv_colnames)
 
 request_log_colnames = ['timestamp', 'pod_name','iat','duration', 'cpu', 'memory', 'location']
