@@ -96,8 +96,8 @@ for index, row in task_events_df.iterrows():
             if float(duration) < test_duration:
                 command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request,memory_req_low=memory_request_low, cpu_req=cpu_request, location=location)
             else:
-                pod_name = "deployment" + str(index)
-                command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request, location=location)
+                #pod_name = "deployment" + str(index)
+                #command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request, location=location)
             timestamp = time.time()
             os.system(command_create)
             request_log = request_log.append([{'timestamp':timestamp, 'pod_name':pod_name, 'iat': iat, 'duration':duration, 
