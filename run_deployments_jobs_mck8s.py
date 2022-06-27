@@ -95,7 +95,7 @@ for index, row in task_events_df.iterrows():
             memory_request_low = memory_request-5
             if float(duration) < test_duration:
                 command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request,memory_req_low=memory_request_low, cpu_req=cpu_request, location=location)
-            else:
+            #else:
                 #pod_name = "deployment" + str(index)
                 #command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request, location=location)
             timestamp = time.time()
