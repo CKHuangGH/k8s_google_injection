@@ -74,10 +74,11 @@ request_log = pd.DataFrame(columns=request_log_colnames)
 
 # Run for 2 hours
 
-test_duration = 1 * 60 * 60
+test_duration = 1 * 60 * 30
 finish_time = time.time() + test_duration
 
 print("Experiment started running at: " + str(time.time()))
+cpu_node=0
 for index, row in task_events_df.iterrows():
     if time.time() < finish_time:
         iat = int(row['iat']/10)
@@ -88,6 +89,7 @@ for index, row in task_events_df.iterrows():
             duration = row['duration']/1000000
             location = row['location']
             sleep_arg = 'sleep ' + str(duration)
+            cpu_node= cpu_node+cpu_request
             command = '/bin/bash -c \'' + sleep_arg + '\''
             
             print("Sleep for " + str(row['iat']/10.0) + " seconds ...")
@@ -103,7 +105,12 @@ for index, row in task_events_df.iterrows():
             request_log = request_log.append([{'timestamp':timestamp, 'pod_name':pod_name, 'iat': iat, 'duration':duration, 
                                  'cpu':cpu_request, 'memory':memory_request, 'location': location}],ignore_index=True)
             file_name = 'mck8s_multiclusterscheduling_cloud_logs_3_070221' + '.csv' 
-            request_log.to_csv(file_name) 
+            request_log.to_csv(file_name)
+            if(cpu_node>2000):
+              time.sleep(30)
+              cpu_node=0
+
+
     else:
         break
        
