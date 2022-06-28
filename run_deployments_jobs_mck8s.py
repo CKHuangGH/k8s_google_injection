@@ -109,8 +109,6 @@ for index, row in task_events_df.iterrows():
             if(cpu_node>2000):
               time.sleep(30)
               cpu_node=0
-
-
     else:
         break
        
