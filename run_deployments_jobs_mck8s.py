@@ -106,9 +106,9 @@ for index, row in task_events_df.iterrows():
                                  'cpu':cpu_request, 'memory':memory_request, 'location': location}],ignore_index=True)
             file_name = 'mck8s_multiclusterscheduling_cloud_logs_3_070221' + '.csv' 
             request_log.to_csv(file_name)
-            if(cpu_node>2000):
-              time.sleep(30)
-              cpu_node=0
+            #if(cpu_node>2000):
+            #  time.sleep(10)
+            #  cpu_node=0
     else:
         break
        
