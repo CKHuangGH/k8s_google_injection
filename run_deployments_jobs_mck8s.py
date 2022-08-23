@@ -19,7 +19,7 @@ spec:
           - name: STRESS_VM
             value: "4"
           - name: STRESS_VM_BYTES
-            value: "{memory_req_low}"
+            value: "{memory_req_byte}"
           - name: STRESS_TIMEOUT
             value: "{sleep_time}"
         image: chuangtw/stress-ng:latest
@@ -94,9 +94,9 @@ for index, row in task_events_df.iterrows():
             
             print("Sleep for " + str(row['iat']/10.0) + " seconds ...")
             time.sleep(row['iat']/10.0)
-            memory_request_low = memory_request-5
+            memory_request_byte = memory_request*1048576
             if float(duration) < test_duration:
-                command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request,memory_req_low=memory_request_low, cpu_req=cpu_request, location=location)
+                command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request,memory_req_byte=memory_request_byte, cpu_req=cpu_request, location=location)
             #else:
                 #pod_name = "deployment" + str(index)
                 #command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request, location=location)
