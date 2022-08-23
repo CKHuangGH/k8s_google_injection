@@ -17,7 +17,7 @@ spec:
       - name: {job_name}
         env:
           - name: STRESS_VM
-            value: "1"
+            value: "4"
           - name: STRESS_VM_BYTES
             value: "{memory_req_low}"
           - name: STRESS_TIMEOUT
