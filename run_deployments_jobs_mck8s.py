@@ -74,7 +74,7 @@ request_log = pd.DataFrame(columns=request_log_colnames)
 
 # Run for 2 hours
 
-test_duration = 1 * 60 * 30
+test_duration = 1 * 60 * 60
 finish_time = time.time() + test_duration
 
 print("Experiment started running at: " + str(time.time()))
@@ -106,9 +106,6 @@ for index, row in task_events_df.iterrows():
                                  'cpu':cpu_request, 'memory':memory_request, 'location': location}],ignore_index=True)
             file_name = 'mck8s_multiclusterscheduling_cloud_logs_3_070221' + '.csv' 
             request_log.to_csv(file_name)
-            #if(cpu_node>2000):
-            #  time.sleep(10)
-            #  cpu_node=0
     else:
         break
        
