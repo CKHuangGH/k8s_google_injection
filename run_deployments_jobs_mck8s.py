@@ -80,8 +80,8 @@ finish_time = time.time() + test_duration
 print("Experiment started running at: " + str(time.time()))
 cpu_node=0
 for index, row in task_events_df.iterrows():
-    #if index <= 1204:
-    if time.time() < finish_time:
+    if index <= 1209:
+    #if time.time() < finish_time:
         iat = int(row['iat']/10)
         if iat <= 1 * 60:
             pod_name = "task" + str(index)
