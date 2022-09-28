@@ -74,7 +74,8 @@ finish_time = time.time() + test_duration
 
 print("Experiment started running at: " + str(time.time()))
 for index, row in task_events_df.iterrows():
-    if time.time() < finish_time:
+    if index <= 1209:
+    #if time.time() < finish_time:
         if int(row['iat']/10) <= 2 * 60:
             pod_name = "task" + str(index)
             cpu_request = int(10000.0*row['cpu'])
@@ -86,8 +87,7 @@ for index, row in task_events_df.iterrows():
             print("Sleep for " + str(row['iat']/10.0) + " seconds ...")
             time.sleep(row['iat']/10.0)
             
-            if float(duration) < test_duration:
-                command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request, cpu_req=cpu_request)
+            command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request, cpu_req=cpu_request)
             #else:
                 #pod_name = "deployment" + str(index)
                 #command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request)
