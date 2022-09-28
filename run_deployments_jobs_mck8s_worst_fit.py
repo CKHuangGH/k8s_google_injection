@@ -15,9 +15,14 @@ spec:
     spec:
       containers:
       - name: {job_name}
-        image: quay.io/jitesoft/debian
-        command: ["/bin/sh"]
-        args: ["-c", "sleep {sleep_time}"]
+        env:
+          - name: STRESS_VM
+            value: "4"
+          - name: STRESS_VM_BYTES
+            value: "{memory_req_byte}"
+          - name: STRESS_TIMEOUT
+            value: "{sleep_time}"
+        image: chuangtw/stress-ng:latest
         resources:
             requests:
               memory: "{memory_req}Mi"
@@ -87,7 +92,8 @@ for index, row in task_events_df.iterrows():
             print("Sleep for " + str(row['iat']/10.0) + " seconds ...")
             time.sleep(row['iat']/10.0)
             
-            command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request, cpu_req=cpu_request)
+            command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request, memory_req_byte=memory_request_byte, cpu_req=cpu_request)
+
             #else:
                 #pod_name = "deployment" + str(index)
                 #command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request)
@@ -95,7 +101,7 @@ for index, row in task_events_df.iterrows():
             os.system(command_create)
             request_log = request_log.append([{'timestamp':timestamp, 'pod_name':pod_name, 'duration':duration, 
                                  'cpu':cpu_request, 'memory':memory_request}],ignore_index=True)
-            file_name = 'multi_cluster_scheduling_logs_' + str(time.time()) + '.csv' 
+            file_name = 'multi_cluster_scheduling_logs.csv' 
             request_log.to_csv(file_name) 
     else:
         break
