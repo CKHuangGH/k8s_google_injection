@@ -66,7 +66,7 @@ spec:
 EOF'''
 
 task_events_csv_colnames = ['iat','duration','cpu','memory']         
-task_events_df = pd.read_csv(os.path.join('/root/k8s_google_injection', 'synthetic_trace_10000.csv'), sep=',', header=None, index_col=False, 
+task_events_df = pd.read_csv(os.path.join('/root/k8s_google_injection', 'synthetic_trace_5000.csv'), sep=',', header=None, index_col=False, 
                          names=task_events_csv_colnames)
 
 request_log_colnames = ['timestamp', 'pod_name','duration', 'cpu', 'memory']
