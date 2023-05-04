@@ -147,7 +147,7 @@ for index, row in task_events_df.iterrows():
             memory_request_byte = memory_request*1048576
 
             # if float(duration) < test_duration:
-            command_create = job_template.format(job_name=pod_name, job_duration=duration, memory_req=memory_request, cpu_req=cpu_request, location=location)
+            command_create = job_template.format(job_name=pod_name, job_duration=duration, memory_req=memory_request, cpu_req=cpu_request, location=location, memory_req_byte=memory_request_byte)
             # else:
             #     pod_name = "deployment" + str(index)
             #     command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request, location=location)
