@@ -24,12 +24,12 @@ spec:
             value: "{sleep_time}"
         image: chuangtw/stress-ng:latest
         resources:
-            requests:
-              memory: "{memory_req}Mi"
-              cpu: "{cpu_req}m"
-            limits:
-              memory: "{memory_req}Mi"
-              cpu: "{cpu_req}m"              
+          requests:
+            memory: "{memory_req}Mi"
+            cpu: "{cpu_req}m"
+          limits:
+            memory: "{memory_req}Mi"
+            cpu: "{cpu_req}m"              
       restartPolicy: Never
 EOF'''
 
@@ -91,6 +91,7 @@ for index, row in task_events_df.iterrows():
 
             print("Sleep for " + str(row['iat']/10.0) + " seconds ...")
             time.sleep(row['iat']/10.0)
+            
             memory_request_byte = memory_request*1048576
             command_create = job_template.format(job_name=pod_name, sleep_time=duration, memory_req=memory_request, memory_req_byte=memory_request_byte, cpu_req=cpu_request)
 

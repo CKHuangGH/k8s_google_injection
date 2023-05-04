@@ -45,12 +45,14 @@ spec:
     spec:
       containers:
       - name: {job_name}
-        image: quay.io/jitesoft/debian
-        command:
-        - /bin/sh
-        args:
-        - -c
-        - sleep {job_duration}
+        env:
+          - name: STRESS_VM
+            value: "4"
+          - name: STRESS_VM_BYTES
+            value: "{memory_req_byte}"
+          - name: STRESS_TIMEOUT
+            value: "{sleep_time}"
+        image: chuangtw/stress-ng:latest
         resources:
           requests:
             memory: {memory_req}Mi
@@ -116,7 +118,7 @@ spec:
 EOF'''
 
 task_events_csv_colnames = ['iat','duration','cpu','memory', 'location']         
-task_events_df = pd.read_csv(os.path.join('/home/mulugeta/Documents/PhD/Experiments/google_cluster_traces/synthetic_traces', 'synthetic_trace_10000_with_locations.csv'), sep=',', header=None, index_col=False, 
+task_events_df = pd.read_csv(os.path.join('/root/k8s_google_injection', 'synthetic_trace_10000_with_cluster5.csv'), sep=',', header=None, index_col=False, 
                          names=task_events_csv_colnames)
 
 request_log_colnames = ['timestamp', 'pod_name','duration', 'cpu', 'memory', 'location']
@@ -129,9 +131,9 @@ finish_time = time.time() + test_duration
 
 print("Experiment started running at: " + str(time.time()))
 for index, row in task_events_df.iterrows():
-    if time.time() < finish_time:
+    if index <= 1209:
         #if int(row['iat']/10) > 1 and int(row['iat']/10) < 2 * 60:
-        if int(row['iat']/10) < 1 * 60:
+        if int(row['iat']/10) <= 1 * 60:
             pod_name = "task" + str(index)
             cpu_request = int(10000.0*row['cpu'])
             memory_request = int(10000.0*row['memory'])
@@ -142,18 +144,19 @@ for index, row in task_events_df.iterrows():
 
             print("Sleep for " + str(row['iat']/10.0) + " seconds ...")
             time.sleep(row['iat']/10.0)
-            
-            if float(duration) < test_duration:
-                command_create = job_template.format(job_name=pod_name, job_duration=duration, memory_req=memory_request, cpu_req=cpu_request, location=location)
-            else:
-                pod_name = "deployment" + str(index)
-                command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request, location=location)
+            memory_request_byte = memory_request*1048576
+
+            # if float(duration) < test_duration:
+            command_create = job_template.format(job_name=pod_name, job_duration=duration, memory_req=memory_request, cpu_req=cpu_request, location=location)
+            # else:
+            #     pod_name = "deployment" + str(index)
+            #     command_create = deployment_template.format(deployment_name=pod_name, memory_req=memory_request, cpu_req=cpu_request, location=location)
             timestamp = time.time()
             os.system(command_create)
             request_log = request_log.append([{'timestamp':timestamp, 'pod_name':pod_name, 'duration':duration, 
                                  'cpu':cpu_request, 'memory':memory_request, 'location': location}],ignore_index=True)
             #file_name = 'fog_scheduling_test_logs_' + str(time.time()) + '.csv' 
-            file_name = 'kubefed_scheduling_test_logs_location_3_020221' + '.csv'
+            file_name = 'multi_cluster_scheduling_logs.csv'
             request_log.to_csv(file_name)
     else:
         break
