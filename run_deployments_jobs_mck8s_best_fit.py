@@ -41,7 +41,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  placementPolicy: worst-fit
+  placementPolicy: best-fit
   replicas: 1
   selector:
     matchLabels:
